@@ -23,6 +23,9 @@ p {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.nav-link{
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -38,6 +41,13 @@ p {
 	      </a>
 	    </div>
 	  </div>
+   </div>
+   <div class="row text-center" style="margin-top: 10px">
+     <ul class="pagination">
+       <li v-if="store.startPage>1"><a class="nav-link" @click="store.movePage(store.startPage-1)">&laquo;</a></li>
+       <li v-for="i in store.range" :class="i===store.curpage?'active':''"><a class="nav-link" @click="store.movePage(i)">{{i}}</a></li>
+       <li v-if="store.endPage<store.totalpage"><a class="nav-link" @click="store.movePage(store.endPage+1)">&raquo;</a></li>
+     </ul>
    </div>
   </div>
   <script src="/js/axios.js"></script>

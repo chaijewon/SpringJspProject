@@ -9,6 +9,16 @@ const useRecipeStore=defineStore('recipe',{
 		startPage:0,
 		endPage:0
 	}),
+	getters:{
+		range:(state)=>{
+			const arr=[]
+			for(let i=state.startPage;i<=state.endPage;i++)
+			{
+				arr.push(i)
+			}
+			return arr
+		}
+	},
 	actions:{
 		// default 매개변수 => recipeListDate() recipeListDate(2)
 		async recipeListData(){
