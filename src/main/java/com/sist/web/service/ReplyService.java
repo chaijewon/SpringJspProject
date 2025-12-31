@@ -21,4 +21,8 @@ public interface ReplyService {
 			  +"(SELECT NVL(MAX(no)+1,1) FROM comment_0),"
 			  +"#{cno},#{type},#{id},#{name},#{msg},SYSDATE)")*/
 	   public void replyInsert(ReplyVO vo);
+	   
+	   public void replyDelete(int no);
+	   
+	   public void replyUpdate(ReplyVO vo);
 }

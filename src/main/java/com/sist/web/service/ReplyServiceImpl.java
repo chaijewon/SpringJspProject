@@ -23,4 +23,16 @@ public class ReplyServiceImpl implements ReplyService{
 	// TODO Auto-generated method stub
 	mapper.replyInsert(vo);
   }
+
+  @Override
+  public void replyDelete(int no) {
+	// TODO Auto-generated method stub
+	mapper.replyDelete(no);
+  }
+
+  @Override
+  public void replyUpdate(ReplyVO vo) {
+	// TODO Auto-generated method stub
+	mapper.replyUpdate(vo);
+  }
 }

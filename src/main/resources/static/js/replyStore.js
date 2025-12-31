@@ -16,8 +16,10 @@ const useReplyStore=defineStore('reply',{
 	// getters
 	// actions 
 	actions:{
-		toggleUpdate(no){
+		toggleUpdate(no,msg){
 			this.upReplyNo=this.upReplyNo===no?null:no
+			this.updateMsg[no]=msg
+			
 		},
 		// 목록 읽기
 		async replyListData(cno){
@@ -33,6 +35,18 @@ const useReplyStore=defineStore('reply',{
 			this.type=data.type
 		},
 		// 수정 
+		async replyUpdate(no){
+			const {data} = await api.put('/reply/update_vue/',{
+				no:no,
+				cno:this.cno,
+				type:this.type,
+				msg:this.updateMsg[no]
+			})
+			this.reply_list=data.list
+			this.cno=data.cno
+			this.type=data.type
+			this.upReplyNo=null
+		},
 		// 추가
 		async replyInsert(){
 			if(!this.msg.trim()) return
@@ -45,8 +59,20 @@ const useReplyStore=defineStore('reply',{
 			this.cno=data.cno
 			this.type=data.type
 			this.msg=''
-		} 
+		}, 
 		// 삭제 
+		async replyDelete(no){
+			const {data} =await api.delete('/reply/delete_vue/',{
+				params:{
+					no:no,
+					cno:this.cno,
+					type:this.type
+				}
+			})
+			this.reply_list=data.list
+			this.cno=data.cno
+			this.type=data.type
+		}
 		// toggle 
 	}
 })
