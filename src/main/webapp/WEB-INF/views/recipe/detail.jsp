@@ -27,10 +27,13 @@ p {
   cursor: pointer;
 }
 </style>
+<script>
+const SESSION_ID='${sessionScope.id}'
+</script>
 </head>
 <body>
-   <div class="container">
-     <div class="row" id="recipe_detail">
+   <div class="container" id="recipe_detail">
+     <div class="row">
        <table class="table">
         <tbody>
           <tr>
@@ -101,32 +104,70 @@ p {
        </table>
      </div>
      <div class="row" style="margin-top: 20px" id="recipe_reply">
-       
+       <table class="table">
+        <tbody>
+          <tr>
+           <td>
+             <table class="table" v-for="(rvo,index) in rStore.reply_list" :key="index">
+              <tbody>
+                <tr>
+                 <td class="text-left">◑{{rvo.name}} &nbsp; {{rvo.dbday}}</td>
+                 <td class="text-right"></td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-left">
+                    <pre style="white-space: pre-wrap;">{{rvo.msg}}</pre>
+                  </td>
+                </tr>
+              </tbody>
+             </table>
+           </td>
+          </tr>
+        </tbody>
+       </table>
+       <table class="table" v-if="rStore.sessionId">
+         <tbody>
+          <tr>
+           <td>
+            <textarea rows="5" cols="100" style="float: left" v-model="rStore.msg"></textarea>
+            <button type="button" class="btn-success"
+             style="width: 100px;height: 102px;float: left"
+             @click="rStore.replyInsert()"
+             >댓글쓰기</button>
+           </td>
+          </tr>
+         </tbody>
+       </table>
      </div>
    </div>
    <script src="/js/axios.js"></script>
    <script src="/js/recipeStore.js"></script>
+   <script src="/js/replyStore.js"></script>
    <script type="text/javascript">
     const {createApp,onMounted} = Vue
     const {createPinia} = Pinia
     const detailApp=createApp({
     	setup(){
         	const store=useRecipeStore();
+        	const rStore=useReplyStore();
+        	
         	const params=new URLSearchParams(location.search)
    		    const no=params.get('no')
    		    
    		    onMounted(()=>{
    		    	store.recipeDetailData(no)
+   		    	rStore.sessionId=SESSION_ID
+   		    	rStore.replyListData(no)
    		    })
    		    
    		    return {
-        		store
+        		store,
+        		rStore
         	}
         }
     })
     detailApp.use(createPinia())
     detailApp.mount("#recipe_detail")
-    
    </script>
 </body>
 </html>
